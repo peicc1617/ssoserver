@@ -63,7 +63,8 @@ public class LoginController {
             Cookie cookie=new Cookie("token",token);
             //重定向地址，形如：http://www.spider.xjtu.com:8084/serviceRegister.html
 //            String cookieDomain=redirectUrl.substring(redirectUrl.indexOf(".")+1,redirectUrl.lastIndexOf(":"));
-            cookie.setDomain("xjtu.com");
+//            cookie.setDomain("xjtu.com");
+            cookie.setDomain("localhost");
             //将cookie写入客户端
             resp.addCookie(cookie);
             //将token信息写入session
