@@ -2,7 +2,6 @@ package xjtu.ssoserver.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.sun.deploy.net.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,8 +62,8 @@ public class LoginController {
             Cookie cookie=new Cookie("token",token);
             //重定向地址，形如：http://www.spider.xjtu.com:8084/serviceRegister.html
 //            String cookieDomain=redirectUrl.substring(redirectUrl.indexOf(".")+1,redirectUrl.lastIndexOf(":"));
-//            cookie.setDomain("xjtu.com");
-            cookie.setDomain("localhost");
+//            cookie.setDomain("121.89.222.196");
+            cookie.setDomain("xjtu.edu.cn");
             //将cookie写入客户端
             resp.addCookie(cookie);
             //将token信息写入session
@@ -162,15 +161,34 @@ public class LoginController {
             //清空client_info数据库对应记录
             clientInfoMapper.removeClientInfoByTokenId(tokenId);
         }
+        LOGGER.info("销毁全局会话");
         //销毁全局会话
         session.invalidate();
         //清空cookie信息
         Cookie cookie=new Cookie("token","");
-        cookie.setDomain("xjtu.com");
+        cookie.setDomain("xjtu.edu.cn");
+//      cookie.setDomain("121.89.222.196");
         cookie.setMaxAge(0);// 删除cookie
         resp.addCookie(cookie);
+        //清空alipay相关cookie信息
+        Cookie ALIPAYJSESSIONID=new Cookie("ALIPAYJSESSIONID","666");
+        ALIPAYJSESSIONID.setDomain("xjtu.edu.cn");
+//      cookie.setDomain("121.89.222.196");
+        ALIPAYJSESSIONID.setMaxAge(0);// 删除cookie
+        resp.addCookie(ALIPAYJSESSIONID);
+        Cookie JSESSIONID=new Cookie("JSESSIONID","");
+        JSESSIONID.setDomain("openauth.alipay.com");
+//      cookie.setDomain("121.89.222.196");
+        JSESSIONID.setMaxAge(0);// 删除cookie
+        resp.addCookie(JSESSIONID);
         //跳转到退出页面
-        resp.sendRedirect("http://www.sso.xjtu.com:8090"+"/checkLogin?redirectUrl="+ redirectUrl);
+        resp.sendRedirect("http://innovation.xjtu.edu.cn:8095"+"/checkLogin?redirectUrl="+ redirectUrl);
 //        return "login";
+    }
+    //支付宝登录处理
+    public Result alipay(){
+
+        LOGGER.info("未获取到支付宝相关用户信息");
+        return Result.failure("未获取到支付宝相关用户信息");
     }
 }
