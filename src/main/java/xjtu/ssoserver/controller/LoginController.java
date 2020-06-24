@@ -62,8 +62,8 @@ public class LoginController {
             Cookie cookie=new Cookie("token",token);
             //重定向地址，形如：http://www.spider.xjtu.com:8084/serviceRegister.html
 //            String cookieDomain=redirectUrl.substring(redirectUrl.indexOf(".")+1,redirectUrl.lastIndexOf(":"));
-//            cookie.setDomain("121.89.222.196");
-            cookie.setDomain("xjtu.edu.cn");
+            cookie.setDomain("121.89.222.196");
+//            cookie.setDomain("xjtu.edu.cn");
             //将cookie写入客户端
             resp.addCookie(cookie);
             //将token信息写入session
@@ -166,14 +166,14 @@ public class LoginController {
         session.invalidate();
         //清空cookie信息
         Cookie cookie=new Cookie("token","");
-        cookie.setDomain("xjtu.edu.cn");
-//      cookie.setDomain("121.89.222.196");
+//        cookie.setDomain("xjtu.edu.cn");
+        cookie.setDomain("121.89.222.196");
         cookie.setMaxAge(0);// 删除cookie
         resp.addCookie(cookie);
         //清空alipay相关cookie信息
         Cookie ALIPAYJSESSIONID=new Cookie("ALIPAYJSESSIONID","666");
-        ALIPAYJSESSIONID.setDomain("xjtu.edu.cn");
-//      cookie.setDomain("121.89.222.196");
+//        ALIPAYJSESSIONID.setDomain("xjtu.edu.cn");
+      cookie.setDomain("121.89.222.196");
         ALIPAYJSESSIONID.setMaxAge(0);// 删除cookie
         resp.addCookie(ALIPAYJSESSIONID);
         Cookie JSESSIONID=new Cookie("JSESSIONID","");
@@ -182,13 +182,15 @@ public class LoginController {
         JSESSIONID.setMaxAge(0);// 删除cookie
         resp.addCookie(JSESSIONID);
         //跳转到退出页面
-        resp.sendRedirect("http://innovation.xjtu.edu.cn:8095"+"/checkLogin?redirectUrl="+ redirectUrl);
+        resp.sendRedirect("http://121.89.222.196:8095"+"/checkLogin?redirectUrl="+ redirectUrl);
 //        return "login";
     }
     //支付宝登录处理
-    public Result alipay(){
+    @RequestMapping("/sso/test")
+    @ResponseBody
+    public String testSSO(){
 
-        LOGGER.info("未获取到支付宝相关用户信息");
-        return Result.failure("未获取到支付宝相关用户信息");
+        LOGGER.info("用于测试docker部署情况");
+        return "测试成功";
     }
 }
